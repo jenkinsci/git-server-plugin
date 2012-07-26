@@ -1,0 +1,60 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.jenkins-ci.plugins</groupId>
+    <artifactId>plugin</artifactId>
+    <version>1.474</version>
+  </parent>
+
+  <artifactId>git-server</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>hpi</packaging>
+
+  <name>Git server plugin</name>
+  <description>
+    This library plugin provides embedded Git server capability inside Jenkins
+  </description>
+  <url>http://wiki.jenkins-ci.org/display/JENKINS/Git+Server+Plugin</url>
+
+  <scm>
+    <connection>scm:git:git://github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
+    <developerConnection>scm:git:git@github.com:jenkinsci/${project.artifactId}-plugin.git</developerConnection>
+  </scm>
+
+  <licenses>
+    <license>
+      <name>The MIT license</name>
+      <url>http://www.opensource.org/licenses/mit-license.php</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.jenkins-ci.modules</groupId>
+      <artifactId>sshd</artifactId>
+      <version>1.1</version>
+      <scope>provided</scope><!-- this is in the core -->
+    </dependency>
+
+    <dependency>
+      <groupId>org.jenkinsci.plugins</groupId>
+      <artifactId>git</artifactId>
+      <version>1.1.17</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.jgit</groupId>
+      <artifactId>org.eclipse.jgit.http.server</artifactId>
+      <version>1.1.0.201109151100-r</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.jgit</groupId>
+      <artifactId>org.eclipse.jgit</artifactId>
+      <version>1.1.0.201109151100-r</version>
+    </dependency>
+  </dependencies>
+
+</project>
