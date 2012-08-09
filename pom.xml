@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
-    <version>1.474</version>
+    <version>1.447</version>
   </parent>
 
   <artifactId>git-server</artifactId>
@@ -56,5 +56,19 @@
       <version>1.1.0.201109151100-r</version>
     </dependency>
   </dependencies>
+
+  <repositories>
+    <repository>
+      <id>repo.jenkins-ci.org</id>
+      <url>http://repo.jenkins-ci.org/public/</url>
+    </repository>
+
+    <repository>
+      <id>jgit-repository</id>
+      <name>Eclipse JGit Repository</name>
+      <url>http://download.eclipse.org/jgit/maven</url>
+    </repository>
+  </repositories>
+
 
 </project>
