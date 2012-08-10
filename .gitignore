@@ -1,0 +1,9 @@
+\#*
+.#*
+*~
+.ws/
+target/
+mvn.out*
+.settings/
+.repository/
+.settings.xml
