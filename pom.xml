@@ -8,7 +8,7 @@
   </parent>
 
   <artifactId>git-server</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <packaging>hpi</packaging>
 
   <name>Git server plugin</name>
