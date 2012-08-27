@@ -4,6 +4,7 @@ import hudson.model.Action;
 import jenkins.model.Jenkins;
 import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.http.server.GitServlet;
+import org.eclipse.jgit.http.server.resolver.DefaultReceivePackFactory;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.transport.ReceivePack;
 import org.eclipse.jgit.transport.UploadPack;
@@ -47,12 +48,29 @@ public abstract class HttpGitRepository {
 
     /**
      * Returns the {@link ReceivePack} that handles "git push" from client.
+     *
+     * The most basic implementation is the following, which allows anyone to push to this repository,
+     * so normally you want some kind of access check before that. {@link DefaultReceivePackFactory} isn't suitable
+     * here because it requires that the user has non-empty name, which isn't necessarily true in Jenkins
+     * (for example, when the security is off entirely.)
+     *
+     * <pre>
+     * return new ReceivePack(db);
+     * </pre>
+     *
      * @see ReceivePackFactory#create(Object, Repository)
      */
     public abstract ReceivePack createReceivePack(HttpServletRequest context, Repository db) throws ServiceNotEnabledException, ServiceNotAuthorizedException;
 
     /**
      * Returns the {@link UploadPack} that handles "git fetch" from client.
+     *
+     * The most basic implementation is the following, which exposes this repository to everyone.
+     *
+     * <pre>
+     * return new DefaultUploadPackFactory().create(context,db);
+     * </pre>
+     *
      * @see UploadPackFactory#create(Object, Repository)
      */
     public abstract UploadPack createUploadPack(HttpServletRequest context, Repository db) throws ServiceNotEnabledException, ServiceNotAuthorizedException;
