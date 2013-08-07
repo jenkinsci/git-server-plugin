@@ -10,7 +10,6 @@ import org.eclipse.jgit.api.ResetCommand.ResetType;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.Repository;
-import org.eclipse.jgit.storage.file.FileRepository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.transport.PostReceiveHook;
 import org.eclipse.jgit.transport.ReceiveCommand;
@@ -49,7 +48,7 @@ public abstract class FileBackedHttpGitRepository extends HttpGitRepository {
 
     @Override
     public Repository openRepository() throws IOException {
-        FileRepository r = new FileRepositoryBuilder().setWorkTree(workspace).build();
+        Repository r = new FileRepositoryBuilder().setWorkTree(workspace).build();
 
         // if the repository doesn't exist, create it
         if (!r.getObjectDatabase().exists()) {
@@ -63,7 +62,7 @@ public abstract class FileBackedHttpGitRepository extends HttpGitRepository {
      *
      * This implementation also imports whatever currently in there into the repository.
      */
-    protected void createInitialRepository(FileRepository r) throws IOException {
+    protected void createInitialRepository(Repository r) throws IOException {
         r.create();
 
         try {
