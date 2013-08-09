@@ -8,7 +8,6 @@ import org.apache.commons.io.IOUtils;
 import org.eclipse.jgit.errors.NotSupportedException;
 import org.eclipse.jgit.errors.TransportException;
 import org.eclipse.jgit.lib.Repository;
-import org.eclipse.jgit.storage.file.FileRepository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.transport.BasePackFetchConnection;
 import org.eclipse.jgit.transport.BasePackPushConnection;
@@ -99,7 +98,7 @@ public class ChannelTransport extends Transport implements PackTransport {
         }
 
         public Void invoke(File f, VirtualChannel channel) throws IOException, InterruptedException {
-            FileRepository repo = new FileRepositoryBuilder().setWorkTree(f).build();
+            Repository repo = new FileRepositoryBuilder().setWorkTree(f).build();
             try {
                 final UploadPack rp = new UploadPack(repo);
                 rp.upload(new BufferedInputStream(l2r.getIn()), new BufferedOutputStream(r2l.getOut()), null);
@@ -122,7 +121,7 @@ public class ChannelTransport extends Transport implements PackTransport {
         }
 
         public Void invoke(File f, VirtualChannel channel) throws IOException, InterruptedException {
-            FileRepository repo = new FileRepositoryBuilder().setWorkTree(f).build();
+            Repository repo = new FileRepositoryBuilder().setWorkTree(f).build();
             try {
                 final ReceivePack rp = new ReceivePack(repo);
                 rp.receive(new BufferedInputStream(l2r.getIn()), new BufferedOutputStream(r2l.getOut()), null);
