@@ -1,5 +1,8 @@
 package org.jenkinsci.plugins.gitserver;
 
+import hudson.Extension;
+import hudson.security.csrf.CrumbExclusion;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
@@ -34,9 +37,8 @@ import java.util.Vector;
  * 
  * @author Kohsuke Kawaguchi
  */
-// TODO: this can be only added after 1.448 as CrumbExclusion doesn't exist in 1.447
-// @Extension
-public class CSRFExclusionImpl /*extends CrumbExclusion */ {
+@Extension
+public class CSRFExclusionImpl extends CrumbExclusion {
 
     public boolean process(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         if (!"application/x-git-receive-pack-request".equals(request.getHeader("Content-Type")))
