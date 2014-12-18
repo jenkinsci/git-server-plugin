@@ -140,6 +140,8 @@ public abstract class HttpGitRepository {
         if (realRequest==null)
             realRequest = req;
 
+        realRequest = new Jenkins2521Workaround(realRequest);
+
         /*
             GitServlet uses getPathInfo() to determine the current request, whereas in Stapler's sense it should be using
             getRestOfPath().
