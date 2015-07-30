@@ -43,7 +43,9 @@ public abstract class FileBackedHttpGitRepository extends HttpGitRepository {
 
     protected FileBackedHttpGitRepository(File workspace) {
         this.workspace = workspace;
-        workspace.mkdirs();
+        if (!workspace.exists() && !workspace.mkdirs()) {
+            LOGGER.log(Level.WARNING, "Cannot create a workspace in {0}", workspace);
+        }
     }
 
     @Override
