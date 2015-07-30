@@ -11,7 +11,7 @@
   <version>1.7-SNAPSHOT</version>
   <packaging>hpi</packaging>
   
-  <name>Git server plugin</name>
+  <name>Jenkins GIT server Plugin</name>
   <description>
     This library plugin provides embedded Git server capability inside Jenkins
   </description>
