@@ -11,11 +11,16 @@
   <version>1.7-SNAPSHOT</version>
   <packaging>hpi</packaging>
   
-  <name>Git server plugin</name>
+  <name>Jenkins GIT server Plugin</name>
   <description>
     This library plugin provides embedded Git server capability inside Jenkins
   </description>
   <url>http://wiki.jenkins-ci.org/display/JENKINS/Git+Server+Plugin</url>
+
+  <properties>
+    <findbugs-maven-plugin.version>3.0.1</findbugs-maven-plugin.version>
+    <findbugs.failOnError>true</findbugs.failOnError>
+  </properties>
 
   <scm>
     <connection>scm:git:git://github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
@@ -43,6 +48,13 @@
       <groupId>org.jenkins-ci.plugins</groupId>
       <artifactId>git-client</artifactId>
       <version>1.11.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>annotations</artifactId>
+      <version>3.0.0</version>
+      <scope>provided</scope>
     </dependency>
 
   </dependencies>
@@ -128,6 +140,24 @@
                             </pluginExecutions>
                         </lifecycleMappingMetadata>
                     </configuration>
+                </plugin>
+                <plugin>
+                  <groupId>org.codehaus.mojo</groupId>
+                  <artifactId>findbugs-maven-plugin</artifactId>
+                  <version>${findbugs-maven-plugin.version}</version>
+                  <configuration>
+                    <failOnError>${findbugs.failOnError}</failOnError>
+                    <xmlOutput>true</xmlOutput>
+                  </configuration>
+                  <executions>
+                    <execution>
+                      <id>run-findbugs</id>
+                      <phase>verify</phase> 
+                      <goals>
+                        <goal>check</goal> 
+                      </goals>
+                    </execution>
+                  </executions>
                 </plugin>
             </plugins>
         </pluginManagement>
