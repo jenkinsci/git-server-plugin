@@ -105,6 +105,16 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <plugins>
+        <!-- This can be removed after upgrade from 1.480 -->
+            <plugin>
+                <groupId>org.jenkins-ci.tools</groupId>
+                <artifactId>maven-hpi-plugin</artifactId>
+                <configuration>
+                    <disabledTestInjection>true</disabledTestInjection>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
 </project>
