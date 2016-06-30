@@ -106,8 +106,12 @@ public abstract class HttpGitRepository {
                     return "";
                 }
 
-                public ServletContext getServletContext() {
-                    return Jenkins.getInstance().servletContext;
+                public ServletContext getServletContext() throws IllegalStateException {
+                    Jenkins j = Jenkins.getInstance();
+                    if (j == null) {
+                        throw new IllegalStateException();
+                    }
+                    return j.servletContext;
                 }
 
                 public String getInitParameter(String name) {
