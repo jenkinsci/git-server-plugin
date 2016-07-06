@@ -1,3 +1,4 @@
+<?jelly escape-by-default='true'?>
 <div>
   Allows Jenkins to act as a Git server.
 </div>

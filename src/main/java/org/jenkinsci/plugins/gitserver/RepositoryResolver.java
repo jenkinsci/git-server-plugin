@@ -63,7 +63,11 @@ public abstract class RepositoryResolver implements ExtensionPoint {
      */
     public abstract UploadPack createUploadPack(String fullRepositoryName) throws IOException, InterruptedException;
 
-    public static ExtensionList<RepositoryResolver> all() {
-        return Jenkins.getInstance().getExtensionList(RepositoryResolver.class);
+    public static ExtensionList<RepositoryResolver> all() throws IllegalStateException {
+        Jenkins j = Jenkins.getInstance();
+        if (j == null) {
+            throw new IllegalStateException();
+        }
+        return j.getExtensionList(RepositoryResolver.class);
     }
 }

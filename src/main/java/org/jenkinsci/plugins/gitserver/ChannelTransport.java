@@ -4,6 +4,7 @@ import hudson.FilePath;
 import hudson.FilePath.FileCallable;
 import hudson.remoting.Pipe;
 import hudson.remoting.VirtualChannel;
+import jenkins.MasterToSlaveFileCallable;
 import org.apache.commons.io.IOUtils;
 import org.eclipse.jgit.errors.NotSupportedException;
 import org.eclipse.jgit.errors.TransportException;
@@ -88,7 +89,7 @@ public class ChannelTransport extends Transport implements PackTransport {
         // no-op
     }
 
-    private static class GitFetchTask implements FileCallable<Void> {
+    private static class GitFetchTask extends MasterToSlaveFileCallable<Void> {
         private final Pipe l2r;
         private final Pipe r2l;
 
@@ -111,7 +112,7 @@ public class ChannelTransport extends Transport implements PackTransport {
         }
     }
 
-    private static class GitPushTask implements FileCallable<Void> {
+    private static class GitPushTask extends MasterToSlaveFileCallable<Void> {
         private final Pipe l2r;
         private final Pipe r2l;
 
