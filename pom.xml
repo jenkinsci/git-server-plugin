@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
-    <version>2.11</version>
+    <version>3.2</version>
   </parent>
 
   <artifactId>git-server</artifactId>
@@ -15,11 +15,11 @@
   <description>
     This library plugin provides embedded Git server capability inside Jenkins
   </description>
-  <url>http://wiki.jenkins-ci.org/display/JENKINS/Git+Server+Plugin</url>
+  <url>https://wiki.jenkins.io/display/JENKINS/Git+Server+Plugin</url>
 
   <properties>
-    <jenkins.version>1.580.1</jenkins.version>
-    <java.level>6</java.level>
+    <jenkins.version>2.7.3</jenkins.version>
+    <java.level>7</java.level>
   </properties>
 
   <scm>
@@ -37,12 +37,26 @@
   </licenses>
 
   <dependencies>
+    <!-- TODO: It should be coming for the BOM -->
     <dependency>
       <groupId>org.jenkins-ci.modules</groupId>
       <artifactId>sshd</artifactId>
       <version>1.6</version>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.modules</groupId>
+      <artifactId>ssh-cli-auth</artifactId>
+      <version>1.2</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.modules</groupId>
+      <artifactId>instance-identity</artifactId>
+      <version>1.5.1</version>
+      <scope>provided</scope>
+    </dependency>
+
 
     <dependency>
       <groupId>org.jenkins-ci.plugins</groupId>
