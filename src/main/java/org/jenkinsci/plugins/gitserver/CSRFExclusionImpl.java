@@ -4,6 +4,7 @@ import hudson.Extension;
 import hudson.security.csrf.CrumbExclusion;
 
 import javax.servlet.FilterChain;
+import javax.servlet.ReadListener;
 import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -83,8 +84,23 @@ public class CSRFExclusionImpl extends CrumbExclusion {
             public ServletInputStream getInputStream() throws IOException {
                 return new ServletInputStream() {
                     @Override
+                    public boolean isFinished() {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean isReady() {
+                        return true;
+                    }
+
+                    @Override
                     public int read() throws IOException {
                         return -1;
+                    }
+
+                    @Override
+                    public void setReadListener(ReadListener readListener) {
+                        // Do nothing.
                     }
                 };
             }

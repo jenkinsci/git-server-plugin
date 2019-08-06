@@ -4,34 +4,37 @@
   <parent>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
-    <version>2.11</version>
+    <version>3.48</version>
   </parent>
 
   <artifactId>git-server</artifactId>
-  <version>1.8-SNAPSHOT</version>
+  <version>${revision}${changelist}</version>
   <packaging>hpi</packaging>
   
   <name>Jenkins GIT server Plugin</name>
   <description>
     This library plugin provides embedded Git server capability inside Jenkins
   </description>
-  <url>http://wiki.jenkins-ci.org/display/JENKINS/Git+Server+Plugin</url>
+  <url>https://wiki.jenkins.io/display/JENKINS/Git+Server+Plugin</url>
 
   <properties>
-    <jenkins.version>1.580.1</jenkins.version>
-    <java.level>6</java.level>
+    <revision>1.8</revision>
+    <changelist>-SNAPSHOT</changelist>
+    <jenkins.version>2.138.4</jenkins.version>
+    <java.level>8</java.level>
   </properties>
 
   <scm>
     <connection>scm:git:git://github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
     <developerConnection>scm:git:git@github.com:jenkinsci/${project.artifactId}-plugin.git</developerConnection>
-    <tag>HEAD</tag>
+    <url>https://github.com/jenkinsci/${project.artifactId}-plugin</url>
+    <tag>${scmTag}</tag>
   </scm>
 
   <licenses>
     <license>
       <name>The MIT license</name>
-      <url>http://www.opensource.org/licenses/mit-license.php</url>
+      <url>https://www.opensource.org/licenses/mit-license.php</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
@@ -39,18 +42,59 @@
   <dependencies>
     <dependency>
       <groupId>org.jenkins-ci.modules</groupId>
+      <artifactId>instance-identity</artifactId>
+      <version>2.2</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.modules</groupId>
+      <artifactId>ssh-cli-auth</artifactId>
+      <version>1.4</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.modules</groupId>
       <artifactId>sshd</artifactId>
-      <version>1.6</version>
+      <version>2.4</version>
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>org.jenkins-ci.plugins</groupId>
       <artifactId>git-client</artifactId>
-      <version>1.11.0</version>
+      <version>2.7.6</version>
     </dependency>
 
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <configuration>
+          <rules>
+            <requireUpperBoundDeps>
+              <excludes combine.children="append">
+                <!--
+                    We want to be able to build and test this plugin against two
+                    Jenkins baselines: 2.138.4 (for Java 8) and 2.164.1 (for
+                    Java 11). The former provides sshd 2.4, while the latter
+                    provides sshd 2.6. Selecting the correct set of dependencies
+                    for one Jenkins baseline breaks RequireUpperBoundDeps for
+                    the other Jenkins baseline. In the long term, JENKINS-55582
+                    might alleviate this issue. In the short term, we work
+                    around it by excluding this module from the
+                    RequireUpperBoundDeps check.
+                -->
+                <exclude>org.jenkins-ci.modules:sshd</exclude>
+              </excludes>
+            </requireUpperBoundDeps>
+          </rules>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
   <repositories>
     <repository>
