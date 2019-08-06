@@ -20,7 +20,7 @@
   <properties>
     <revision>1.8</revision>
     <changelist>-SNAPSHOT</changelist>
-    <jenkins.version>2.60.3</jenkins.version>
+    <jenkins.version>2.138.4</jenkins.version>
     <java.level>8</java.level>
   </properties>
 
@@ -43,7 +43,7 @@
     <dependency>
       <groupId>org.jenkins-ci.modules</groupId>
       <artifactId>instance-identity</artifactId>
-      <version>2.1</version>
+      <version>2.2</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -55,7 +55,7 @@
     <dependency>
       <groupId>org.jenkins-ci.modules</groupId>
       <artifactId>sshd</artifactId>
-      <version>1.11</version>
+      <version>2.4</version>
       <scope>provided</scope>
     </dependency>
 
@@ -78,17 +78,15 @@
               <excludes combine.children="append">
                 <!--
                     We want to be able to build and test this plugin against two
-                    Jenkins baselines: 2.60.3 (for Java 8) and 2.164.1 (for
-                    Java 11). The former provides instance-identity 2.1 and sshd
-                    1.11, while the latter provides instance-identity 2.2 and
-                    sshd 2.6. Selecting the correct set of dependencies for one
-                    Jenkins baseline breaks RequireUpperBoundDeps for the other
-                    Jenkins baseline. In the long term, JENKINS-55582 might
-                    alleviate this issue. In the short term, we work around it
-                    by excluding these libraries from the RequireUpperBoundDeps
-                    check.
+                    Jenkins baselines: 2.138.4 (for Java 8) and 2.164.1 (for
+                    Java 11). The former provides sshd 2.4, while the latter
+                    provides sshd 2.6. Selecting the correct set of dependencies
+                    for one Jenkins baseline breaks RequireUpperBoundDeps for
+                    the other Jenkins baseline. In the long term, JENKINS-55582
+                    might alleviate this issue. In the short term, we work
+                    around it by excluding this module from the
+                    RequireUpperBoundDeps check.
                 -->
-                <exclude>org.jenkins-ci.modules:instance-identity</exclude>
                 <exclude>org.jenkins-ci.modules:sshd</exclude>
               </excludes>
             </requireUpperBoundDeps>
