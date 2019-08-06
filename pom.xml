@@ -67,6 +67,37 @@
 
   </dependencies>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <configuration>
+          <rules>
+            <requireUpperBoundDeps>
+              <excludes combine.children="append">
+                <!--
+                    We want to be able to build and test this plugin against two
+                    Jenkins baselines: 2.60.3 (for Java 8) and 2.164.1 (for
+                    Java 11). The former provides instance-identity 2.1 and sshd
+                    1.11, while the latter provides instance-identity 2.2 and
+                    sshd 2.6. Selecting the correct set of dependencies for one
+                    Jenkins baseline breaks RequireUpperBoundDeps for the other
+                    Jenkins baseline. In the long term, JENKINS-55582 might
+                    alleviate this issue. In the short term, we work around it
+                    by excluding these libraries from the RequireUpperBoundDeps
+                    check.
+                -->
+                <exclude>org.jenkins-ci.modules:instance-identity</exclude>
+                <exclude>org.jenkins-ci.modules:sshd</exclude>
+              </excludes>
+            </requireUpperBoundDeps>
+          </rules>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
   <repositories>
     <repository>
       <id>repo.jenkins-ci.org</id>
