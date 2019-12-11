@@ -1,5 +1,9 @@
-Git Server Plugin
+Git Server Plugin for Jenkins
 =================
+
+[![Jenkins Plugin](https://img.shields.io/jenkins/plugin/v/git-server.svg)](https://plugins.jenkins.io/git-server)
+[![GitHub release](https://img.shields.io/github/release/jenkinsci/git-server-plugin.svg?label=changelog)](https://github.com/jenkinsci/git-server-plugin/releases/latest)
+[![Jenkins Plugin Installs](https://img.shields.io/jenkins/plugin/i/git-server.svg?color=blue)](https://plugins.jenkins.io/git-server)
 
 This plugin wraps the server-side functionality of JGit so that other plugins can easily expose
 Git repositories from Jenkins via its SSH transport and HTTP in a collaborative fashion.
@@ -30,6 +34,11 @@ The only missing link here is that when the client runs `git clone ssh://server/
 we need to figure out what repositories on the server corresponds to `/foo/bar/zot.git`, and that's what the `RepositoryResolver` extension point does.
 [The sample implementation](https://github.com/jenkinsci/git-userContent-plugin/blob/master/src/main/java/org/jenkinsci/plugins/gitUserContent/GitUserContentRepositorySSHAccess.java) in `git-userContent-plugin` will be hopefully self-explanatory.
 In this case, `GitUserContentRepository` is a singleton (because it's `RootAction`), so we inject that and basically just delegate the calls to it.
+
+## Changelog
+
+* See [GitHub Releases](https://github.com/jenkinsci/git-server-plugin/releases/latest) for recent releases
+* See the [Changelog Archive](./docs/OLD_CHANGELOG.md) for versions 1.7 and older
 
 ## Reporting issues
 
