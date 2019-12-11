@@ -15,7 +15,7 @@
   <description>
     This library plugin provides embedded Git server capability inside Jenkins
   </description>
-  <url>https://wiki.jenkins.io/display/JENKINS/Git+Server+Plugin</url>
+  <url>https://github.com/jenkinsci/git-server-plugin</url>
 
   <properties>
     <revision>1.9</revision>
