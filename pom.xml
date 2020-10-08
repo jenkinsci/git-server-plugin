@@ -49,7 +49,7 @@
     <dependency>
       <groupId>org.jenkins-ci.modules</groupId>
       <artifactId>ssh-cli-auth</artifactId>
-      <version>1.4</version>
+      <version>1.8</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
