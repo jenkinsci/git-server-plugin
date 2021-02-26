@@ -10,7 +10,7 @@
   <artifactId>git-server</artifactId>
   <version>${revision}${changelist}</version>
   <packaging>hpi</packaging>
-  
+
   <name>Jenkins GIT server Plugin</name>
   <description>
     This library plugin provides embedded Git server capability inside Jenkins
@@ -20,7 +20,7 @@
   <properties>
     <revision>1.10</revision>
     <changelist>-SNAPSHOT</changelist>
-    <jenkins.version>2.138.4</jenkins.version>
+    <jenkins.version>2.282</jenkins.version>
     <java.level>8</java.level>
   </properties>
 
@@ -48,15 +48,8 @@
     </dependency>
     <dependency>
       <groupId>org.jenkins-ci.modules</groupId>
-      <artifactId>ssh-cli-auth</artifactId>
-      <version>1.4</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jenkins-ci.modules</groupId>
       <artifactId>sshd</artifactId>
-      <version>2.4</version>
-      <scope>provided</scope>
+      <version>3.0.1</version>
     </dependency>
 
     <dependency>
