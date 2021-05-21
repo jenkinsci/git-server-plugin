@@ -22,7 +22,7 @@ abstract class AbstractGitCommand extends AsynchronousCommand {
     }
 
     @Override
-    protected final int run() throws Exception {
+    protected final int runCommand() throws Exception {
             try {
                 new CmdLineParser(this).parseArgument(getCmdLine().subList(1,getCmdLine().size()));
             } catch (CmdLineException e) {
