@@ -1,7 +1,7 @@
 package org.jenkinsci.plugins.gitserver.ssh;
 
 import hudson.AbortException;
-import org.apache.sshd.server.Command;
+import org.apache.sshd.server.command.Command;
 import org.jenkinsci.main.modules.sshd.AsynchronousCommand;
 import org.jenkinsci.main.modules.sshd.SshCommandFactory.CommandLine;
 import org.kohsuke.args4j.Argument;
@@ -22,7 +22,7 @@ abstract class AbstractGitCommand extends AsynchronousCommand {
     }
 
     @Override
-    protected final int run() throws Exception {
+    protected final int runCommand() throws Exception {
             try {
                 new CmdLineParser(this).parseArgument(getCmdLine().subList(1,getCmdLine().size()));
             } catch (CmdLineException e) {

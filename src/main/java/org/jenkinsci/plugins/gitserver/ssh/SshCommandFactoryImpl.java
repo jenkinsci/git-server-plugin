@@ -1,7 +1,7 @@
 package org.jenkinsci.plugins.gitserver.ssh;
 
 import hudson.Extension;
-import org.apache.sshd.server.Command;
+import org.apache.sshd.server.command.Command;
 import org.jenkinsci.main.modules.sshd.SshCommandFactory;
 
 /**
