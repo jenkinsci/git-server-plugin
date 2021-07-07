@@ -18,7 +18,7 @@
   <url>https://github.com/jenkinsci/git-server-plugin</url>
 
   <properties>
-    <revision>1.10</revision>
+    <revision>1.11</revision>
     <changelist>-SNAPSHOT</changelist>
     <jenkins.version>2.289.1</jenkins.version>
     <java.level>8</java.level>
@@ -44,7 +44,7 @@
       <dependency>
         <groupId>io.jenkins.tools.bom</groupId>
         <artifactId>bom-2.277.x</artifactId>
-        <version>26</version>
+        <version>887.vae9c8ac09ff7</version>
         <scope>import</scope>
         <type>pom</type>
       </dependency>
