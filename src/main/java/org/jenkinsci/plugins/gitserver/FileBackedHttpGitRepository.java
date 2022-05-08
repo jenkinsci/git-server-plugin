@@ -29,14 +29,14 @@ import java.util.logging.Logger;
 
 /**
  * Convenient subtype of {@link HttpGitRepository} where the repository
- * is non-bare, resides in a directory local to the master, and you maintain
+ * is non-bare, resides in a directory local to the controller, and you maintain
  * the local up-to-date checkout whenever a change is pushed.
  *
  * @author Kohsuke Kawaguchi
  */
 public abstract class FileBackedHttpGitRepository extends HttpGitRepository {
     /**
-     * Directory of the local workspace on the master.
+     * Directory of the local workspace on the controller.
      * There will be "./.git" that hosts the actual repository.
      */
     public final File workspace;
@@ -133,7 +133,7 @@ public abstract class FileBackedHttpGitRepository extends HttpGitRepository {
 
     /**
      * Called when new ref is pushed to update the {@linkplain #workspace local workspace}.
-     * The default implementation does "git reset --hard master"
+     * The default implementation does "git reset --hard controller"
      */
     protected void updateWorkspace(Repository repo) throws IOException, GitAPIException {
         ResetCommand cmd = new Git(repo).reset();
