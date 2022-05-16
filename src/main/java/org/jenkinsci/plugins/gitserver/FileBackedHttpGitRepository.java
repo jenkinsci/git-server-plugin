@@ -133,7 +133,7 @@ public abstract class FileBackedHttpGitRepository extends HttpGitRepository {
 
     /**
      * Called when new ref is pushed to update the {@linkplain #workspace local workspace}.
-     * The default implementation does "git reset --hard controller"
+     * The default implementation does "git reset --hard main"
      */
     protected void updateWorkspace(Repository repo) throws IOException, GitAPIException {
         ResetCommand cmd = new Git(repo).reset();
