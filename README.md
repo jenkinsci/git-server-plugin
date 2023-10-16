@@ -1,9 +1,4 @@
-Git Server Plugin for Jenkins
-=================
-
-[![Jenkins Plugin](https://img.shields.io/jenkins/plugin/v/git-server.svg)](https://plugins.jenkins.io/git-server)
-[![GitHub release](https://img.shields.io/github/release/jenkinsci/git-server-plugin.svg?label=changelog)](https://github.com/jenkinsci/git-server-plugin/releases/latest)
-[![Jenkins Plugin Installs](https://img.shields.io/jenkins/plugin/i/git-server.svg?color=blue)](https://plugins.jenkins.io/git-server)
+# Git Server Plugin for Jenkins
 
 This plugin wraps the server-side functionality of JGit so that other plugins can easily expose
 Git repositories from Jenkins via its SSH transport and HTTP in a collaborative fashion.
@@ -24,12 +19,12 @@ is a convenient default implementation that simplifies this further.
 [GitUserContentRepository](https://github.com/jenkinsci/git-userContent-plugin/blob/master/src/main/java/org/jenkinsci/plugins/gitUserContent/GitUserContentRepository.java)
 in `git-userContent-plugin` is an example of using this class. This use
 also implements
-[RootAction](https://wiki.jenkins-ci.org/display/JENKINS/Action+and+its+family+of+subtypes#Actionanditsfamilyofsubtypes-RootAction)
+[RootAction](https://wiki.jenkins.io/display/JENKINS/Action+and+its+family+of+subtypes#Actionanditsfamilyofsubtypes-RootAction)
 to bind this repository at `http://server/jenkins/userContent.git`, and
 This combination is fairly common.
 
 The other class of interest is [`RepositoryResolver`](https://github.com/jenkinsci/git-server-plugin/blob/master/src/main/java/org/jenkinsci/plugins/gitserver/RepositoryResolver.java).
-Git server plugin adds necessary [Jenkins SSH](https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+SSH) CLI hook for exposing Git repositories over SSH.
+Git server plugin adds necessary [Jenkins SSH](https://wiki.jenkins.io/display/JENKINS/Jenkins+SSH) CLI hook for exposing Git repositories over SSH.
 The only missing link here is that when the client runs `git clone ssh://server/foo/bar/zot.git`,
 we need to figure out what repositories on the server corresponds to `/foo/bar/zot.git`, and that's what the `RepositoryResolver` extension point does.
 [The sample implementation](https://github.com/jenkinsci/git-userContent-plugin/blob/master/src/main/java/org/jenkinsci/plugins/gitUserContent/GitUserContentRepositorySSHAccess.java) in `git-userContent-plugin` will be hopefully self-explanatory.
@@ -38,9 +33,9 @@ In this case, `GitUserContentRepository` is a singleton (because it's `RootActio
 ## Changelog
 
 * See [GitHub Releases](https://github.com/jenkinsci/git-server-plugin/releases/latest) for recent releases
-* See the [Changelog Archive](./docs/OLD_CHANGELOG.md) for versions 1.7 and older
+* See the [Changelog Archive](https://github.com/jenkinsci/git-server-plugin/blob/git-server-1.9/docs/OLD_CHANGELOG.md) for versions 1.7 and older
 
 ## Reporting issues
 
-Use [Jenkins Bugtracker](https://issues.jenkins-ci.org/) to report issues or feature requests
+Use [Jenkins issue tracker](https://www.jenkins.io/participate/report-issue/redirect/#17613) to report issues or feature requests
 (project = `JENKINS`, component = `git-server-plugin`).
