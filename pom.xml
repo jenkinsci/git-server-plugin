@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>git-server</artifactId>
-  <version>${changelist}</version>
+  <version>99.${changelist}</version>
   <packaging>hpi</packaging>
 
   <name>Jenkins Git server Plugin</name>
