@@ -7,6 +7,7 @@ import org.jenkinsci.main.modules.sshd.SshCommandFactory.CommandLine;
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
+import org.kohsuke.args4j.ParserProperties;
 
 /**
  * Implements the SSH {@link Command} for the server side git command.
@@ -24,7 +25,8 @@ abstract class AbstractGitCommand extends AsynchronousCommand {
     @Override
     protected final int runCommand() throws Exception {
             try {
-                new CmdLineParser(this).parseArgument(getCmdLine().subList(1,getCmdLine().size()));
+                ParserProperties properties = ParserProperties.defaults().withAtSyntax(false);
+                new CmdLineParser(this, properties).parseArgument(getCmdLine().subList(1,getCmdLine().size()));
             } catch (CmdLineException e) {
                 throw new AbortException(e.getMessage());
             }
