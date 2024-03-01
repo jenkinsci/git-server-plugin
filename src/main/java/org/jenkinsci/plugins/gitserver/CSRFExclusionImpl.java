@@ -3,6 +3,7 @@ package org.jenkinsci.plugins.gitserver;
 import hudson.Extension;
 import hudson.security.csrf.CrumbExclusion;
 
+import java.util.List;
 import javax.servlet.FilterChain;
 import javax.servlet.ReadListener;
 import javax.servlet.ServletException;
@@ -42,7 +43,7 @@ import java.util.Vector;
 public class CSRFExclusionImpl extends CrumbExclusion {
 
     public boolean process(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        if (!"application/x-git-receive-pack-request".equals(request.getHeader("Content-Type")))
+        if (!List.of("application/x-git-receive-pack-request", "application/x-git-upload-pack-request").contains(request.getHeader("Content-Type")))
             return false;
 
 //        String path = request.getPathInfo();
