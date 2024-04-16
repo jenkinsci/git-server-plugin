@@ -57,10 +57,22 @@
       <groupId>org.jenkins-ci.modules</groupId>
       <artifactId>sshd</artifactId>
     </dependency>
-
     <dependency>
       <groupId>org.jenkins-ci.plugins</groupId>
       <artifactId>git-client</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.jgit</groupId>
+      <artifactId>org.eclipse.jgit.ssh.apache</artifactId>
+      <version>6.9.0.202403050737-r</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.plugins</groupId>
+      <artifactId>git-userContent</artifactId>
+      <version>1.4</version>
+      <scope>test</scope>
     </dependency>
 
   </dependencies>

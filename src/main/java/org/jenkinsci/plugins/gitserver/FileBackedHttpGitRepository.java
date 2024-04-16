@@ -50,6 +50,7 @@ public abstract class FileBackedHttpGitRepository extends HttpGitRepository {
 
     @Override
     public Repository openRepository() throws IOException {
+        checkPullPermission();
         Repository r = new FileRepositoryBuilder().setWorkTree(workspace).build();
 
         // if the repository doesn't exist, create it

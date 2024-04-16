@@ -75,6 +75,13 @@ public abstract class HttpGitRepository {
      */
     public abstract UploadPack createUploadPack(HttpServletRequest context, Repository db) throws ServiceNotEnabledException, ServiceNotAuthorizedException;
 
+     /**
+     * to make sure the user has the permission to pull.
+     */
+    public void checkPullPermission() {
+        Jenkins.getInstance().checkPermission(Jenkins.READ);
+    }
+
     protected GitServlet init() {
         GitServlet g = new GitServlet();
         g.setRepositoryResolver(new org.eclipse.jgit.transport.resolver.RepositoryResolver<HttpServletRequest>() {
