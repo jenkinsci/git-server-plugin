@@ -33,6 +33,6 @@ abstract class AbstractGitCommand extends AsynchronousCommand {
 
             return doRun();
     }
-    
+
     protected abstract int doRun() throws Exception;
 }
