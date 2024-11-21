@@ -2,18 +2,18 @@ package org.jenkinsci.plugins.gitserver;
 
 import hudson.Extension;
 import hudson.security.csrf.CrumbExclusion;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ReadListener;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletInputStream;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequestWrapper;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Locale;
 import java.util.Map;
-import java.util.Vector;
-import javax.servlet.FilterChain;
-import javax.servlet.ReadListener;
-import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * CSRF exclusion for git-upload-pack.
@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  * because of the dynamic nature of the URL structure, this doesn't guarantee
  * that we have no leak.
  *
+ * <p>
  * So to further protect Jenkins, we pass through a fake {@link HttpServletRequest}
  * that masks the values of the submission.
  *
@@ -39,48 +40,46 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Extension
 public class CSRFExclusionImpl extends CrumbExclusion {
+    private static final String BOGUS = "bogus";
 
+    @Override
     public boolean process(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         if (!"application/x-git-receive-pack-request".equals(request.getHeader("Content-Type"))) return false;
 
-        //        String path = request.getPathInfo();
-        //        if(!path.contains("/repo.git/") || !path.endsWith("/git-receive-pack"))
-        //            return false;
-
         HttpServletRequestWrapper w = new HttpServletRequestWrapper(request) {
             @Override
             public String getQueryString() {
-                return "bogus";
+                return BOGUS;
             }
 
             @Override
             public String getParameter(String name) {
-                return "bogus";
+                return BOGUS;
             }
 
             @Override
-            public Map getParameterMap() {
+            public Map<String, String[]> getParameterMap() {
                 return Collections.emptyMap();
             }
 
             @Override
-            public Enumeration getParameterNames() {
-                return new Vector().elements();
+            public Enumeration<String> getParameterNames() {
+                return Collections.emptyEnumeration();
             }
 
             @Override
             public String[] getParameterValues(String name) {
-                return new String[] {"bogus"};
+                return new String[] {BOGUS};
             }
 
             @Override
             public String getMethod() {
-                return "BOGUS";
+                return BOGUS.toUpperCase(Locale.ROOT);
             }
 
             @Override
-            public ServletInputStream getInputStream() throws IOException {
+            public ServletInputStream getInputStream() {
                 return new ServletInputStream() {
                     @Override
                     public boolean isFinished() {
@@ -93,7 +92,7 @@ public class CSRFExclusionImpl extends CrumbExclusion {
                     }
 
                     @Override
-                    public int read() throws IOException {
+                    public int read() {
                         return -1;
                     }
 
