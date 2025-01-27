@@ -5,6 +5,8 @@ import org.eclipse.jgit.transport.ReceivePack;
 import org.jenkinsci.main.modules.sshd.SshCommandFactory.CommandLine;
 import org.jenkinsci.plugins.gitserver.RepositoryResolver;
 
+import java.io.IOException;
+
 /**
  * Implements "git-receive-pack" in Jenkins SSH that receives uploaded commits from clients.
  *
@@ -16,7 +18,7 @@ public class ReceivePackCommand extends AbstractGitCommand {
     }
 
     @Override
-    protected int doRun() throws Exception {
+    protected int doRun() throws IOException, InterruptedException {
         for (RepositoryResolver rr : RepositoryResolver.all()) {
             ReceivePack rp = rr.createReceivePack(repoName);
             if (rp!=null) {

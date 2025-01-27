@@ -1,7 +1,6 @@
 package org.jenkinsci.plugins.gitserver;
 
 import hudson.FilePath;
-import hudson.FilePath.FileCallable;
 import hudson.remoting.Pipe;
 import hudson.remoting.VirtualChannel;
 import jenkins.MasterToSlaveFileCallable;
@@ -56,6 +55,7 @@ public class ChannelTransport extends Transport implements PackTransport {
         } catch (IOException e) {
             throw new TransportException("Failed to open a fetch connection",e);
         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             throw new TransportException("Failed to open a fetch connection",e);
         }
 
@@ -99,15 +99,13 @@ public class ChannelTransport extends Transport implements PackTransport {
         }
 
         public Void invoke(File f, VirtualChannel channel) throws IOException, InterruptedException {
-            Repository repo = new FileRepositoryBuilder().setWorkTree(f).build();
-            try {
+            try (Repository repo = new FileRepositoryBuilder().setWorkTree(f).build()) {
                 final UploadPack rp = new UploadPack(repo);
                 rp.upload(new BufferedInputStream(l2r.getIn()), new BufferedOutputStream(r2l.getOut()), null);
                 return null;
             } finally {
                 IOUtils.closeQuietly(l2r.getIn());
                 IOUtils.closeQuietly(r2l.getOut());
-                repo.close();
             }
         }
     }
@@ -122,15 +120,13 @@ public class ChannelTransport extends Transport implements PackTransport {
         }
 
         public Void invoke(File f, VirtualChannel channel) throws IOException, InterruptedException {
-            Repository repo = new FileRepositoryBuilder().setWorkTree(f).build();
-            try {
+            try (Repository repo = new FileRepositoryBuilder().setWorkTree(f).build()) {
                 final ReceivePack rp = new ReceivePack(repo);
                 rp.receive(new BufferedInputStream(l2r.getIn()), new BufferedOutputStream(r2l.getOut()), null);
                 return null;
             } finally {
                 IOUtils.closeQuietly(l2r.getIn());
                 IOUtils.closeQuietly(r2l.getOut());
-                repo.close();
             }
         }
     }

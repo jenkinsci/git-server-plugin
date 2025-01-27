@@ -5,6 +5,8 @@ import org.eclipse.jgit.transport.UploadPack;
 import org.jenkinsci.main.modules.sshd.SshCommandFactory.CommandLine;
 import org.jenkinsci.plugins.gitserver.RepositoryResolver;
 
+import java.io.IOException;
+
 /**
  * Implements "git-upload-pack" in Jenkins SSH that lets clients
  * download commits from us.
@@ -17,11 +19,13 @@ public class UploadPackCommand extends AbstractGitCommand {
     }
 
     @Override
-    protected int doRun() throws Exception {
+    protected int doRun() throws IOException, InterruptedException {
         for (RepositoryResolver rr : RepositoryResolver.all()) {
             UploadPack up = rr.createUploadPack(repoName);
-            if (up!=null) {
-                up.upload(getInputStream(),getOutputStream(),getErrorStream());
+            if (up != null) {
+                try (up) {
+                    up.upload(getInputStream(), getOutputStream(), getErrorStream());
+                }
                 return 0;
             }
         }
