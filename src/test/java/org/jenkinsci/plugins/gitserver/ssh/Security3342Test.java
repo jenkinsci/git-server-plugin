@@ -1,7 +1,16 @@
 package org.jenkinsci.plugins.gitserver.ssh;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeFalse;
+
 import hudson.Functions;
+import java.io.File;
+import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.util.Collections;
 import java.util.List;
@@ -23,16 +32,6 @@ import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.MockAuthorizationStrategy;
 
-import java.io.File;
-import java.io.IOException;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeFalse;
-
 public class Security3342Test {
 
     @Rule
@@ -51,7 +50,8 @@ public class Security3342Test {
     public void openRepositoryPermissionCheckTest() throws Exception {
 
         j.jenkins.setSecurityRealm(j.createDummySecurityRealm());
-        j.jenkins.setAuthorizationStrategy(new MockAuthorizationStrategy().grant(Jenkins.READ).everywhere().to("tester"));
+        j.jenkins.setAuthorizationStrategy(
+                new MockAuthorizationStrategy().grant(Jenkins.READ).everywhere().to("tester"));
         hudson.model.User tester = hudson.model.User.getOrCreateByIdOrFullName("tester");
         KeyPair keyPair = generateKeys(tester);
         j.jenkins.save();
@@ -70,12 +70,18 @@ public class Security3342Test {
             protected ServerKeyDatabase getServerKeyDatabase(File homeDir, File sshDir) {
                 return new ServerKeyDatabase() {
                     @Override
-                    public List<PublicKey> lookup(String connectAddress, InetSocketAddress remoteAddress, Configuration config) {
+                    public List<PublicKey> lookup(
+                            String connectAddress, InetSocketAddress remoteAddress, Configuration config) {
                         return Collections.emptyList();
                     }
 
                     @Override
-                    public boolean accept(String connectAddress, InetSocketAddress remoteAddress, PublicKey serverKey, Configuration config, CredentialsProvider provider) {
+                    public boolean accept(
+                            String connectAddress,
+                            InetSocketAddress remoteAddress,
+                            PublicKey serverKey,
+                            Configuration config,
+                            CredentialsProvider provider) {
                         return true;
                     }
                 };
@@ -104,12 +110,16 @@ public class Security3342Test {
             Git gitClone2 = clone.call();
         } catch (Exception e) {
             // Verify that the expected exception was caught with the correct message
-            assertTrue(e.getCause() != null && e.getCause().getMessage().contains("hudson.security.AccessDeniedException3: tester is missing the Overall/Read permission"));
+            assertTrue(
+                    e.getCause() != null
+                            && e.getCause()
+                                    .getMessage()
+                                    .contains(
+                                            "hudson.security.AccessDeniedException3: tester is missing the Overall/Read permission"));
         }
         // Verify that the .git directory is not created
         File gitDir2 = new File(dir2, ".git");
         assertFalse(".git directory exist, clone operation succeed", gitDir2.exists());
-
     }
 
     private static KeyPair generateKeys(hudson.model.User user) throws NoSuchAlgorithmException, IOException {

@@ -2,12 +2,11 @@ package org.jenkinsci.plugins.gitserver;
 
 import hudson.ExtensionList;
 import hudson.ExtensionPoint;
+import java.io.IOException;
 import jenkins.model.Jenkins;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.transport.ReceivePack;
 import org.eclipse.jgit.transport.UploadPack;
-
-import java.io.IOException;
 
 /**
  * Resolves the full name of the repository as given by Git clients to actual {@link Repository}.

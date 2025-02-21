@@ -19,13 +19,12 @@ public class ReceivePackCommand extends AbstractGitCommand {
     protected int doRun() throws Exception {
         for (RepositoryResolver rr : RepositoryResolver.all()) {
             ReceivePack rp = rr.createReceivePack(repoName);
-            if (rp!=null) {
-                rp.receive(getInputStream(),getOutputStream(),getErrorStream());
+            if (rp != null) {
+                rp.receive(getInputStream(), getOutputStream(), getErrorStream());
                 return 0;
             }
         }
 
-        throw new AbortException("No such repository exists:"+repoName);
-
+        throw new AbortException("No such repository exists:" + repoName);
     }
 }

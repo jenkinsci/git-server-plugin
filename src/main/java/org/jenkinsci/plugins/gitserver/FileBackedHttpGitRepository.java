@@ -1,5 +1,13 @@
 package org.jenkinsci.plugins.gitserver;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
 import jenkins.model.Jenkins;
 import org.acegisecurity.Authentication;
 import org.eclipse.jgit.api.AddCommand;
@@ -17,15 +25,6 @@ import org.eclipse.jgit.transport.ReceivePack;
 import org.eclipse.jgit.transport.UploadPack;
 import org.eclipse.jgit.transport.resolver.ServiceNotAuthorizedException;
 import org.eclipse.jgit.transport.resolver.ServiceNotEnabledException;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Convenient subtype of {@link HttpGitRepository} where the repository
@@ -76,11 +75,11 @@ public abstract class FileBackedHttpGitRepository extends HttpGitRepository {
             cmd.call();
 
             CommitCommand co = git.commit();
-            co.setAuthor("Jenkins","noreply@jenkins-ci.org");
+            co.setAuthor("Jenkins", "noreply@jenkins-ci.org");
             co.setMessage("Initial import of the existing contents");
             co.call();
         } catch (GitAPIException e) {
-            LOGGER.log(Level.WARNING, "Initial import of "+workspace+" into Git repository failed",e);
+            LOGGER.log(Level.WARNING, "Initial import of " + workspace + " into Git repository failed", e);
         }
     }
 
@@ -94,7 +93,8 @@ public abstract class FileBackedHttpGitRepository extends HttpGitRepository {
      * where /foo/bar is rwx------ and /foo/bar/zot is rwxrwxrwx.)
      */
     @Override
-    public UploadPack createUploadPack(HttpServletRequest context, Repository db) throws ServiceNotEnabledException, ServiceNotAuthorizedException {
+    public UploadPack createUploadPack(HttpServletRequest context, Repository db)
+            throws ServiceNotEnabledException, ServiceNotAuthorizedException {
         return new UploadPack(db);
     }
 
@@ -102,12 +102,13 @@ public abstract class FileBackedHttpGitRepository extends HttpGitRepository {
      * Requires the admin access to be able to push
      */
     @Override
-    public ReceivePack createReceivePack(HttpServletRequest context, Repository db) throws ServiceNotEnabledException, ServiceNotAuthorizedException {
+    public ReceivePack createReceivePack(HttpServletRequest context, Repository db)
+            throws ServiceNotEnabledException, ServiceNotAuthorizedException {
         Authentication a = Jenkins.getAuthentication();
 
         ReceivePack rp = createReceivePack(db);
 
-        rp.setRefLogIdent(new PersonIdent(a.getName(), a.getName()+"@"+context.getRemoteAddr()));
+        rp.setRefLogIdent(new PersonIdent(a.getName(), a.getName() + "@" + context.getRemoteAddr()));
 
         return rp;
     }
@@ -125,7 +126,7 @@ public abstract class FileBackedHttpGitRepository extends HttpGitRepository {
                 } catch (Exception e) {
                     StringWriter sw = new StringWriter();
                     e.printStackTrace(new PrintWriter(sw));
-                    rp.sendMessage("Failed to update workspace: "+sw);
+                    rp.sendMessage("Failed to update workspace: " + sw);
                 }
             }
         });

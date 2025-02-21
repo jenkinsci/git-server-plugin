@@ -2,7 +2,11 @@ package org.jenkinsci.plugins.gitserver;
 
 import hudson.Extension;
 import hudson.security.csrf.CrumbExclusion;
-
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Map;
+import java.util.Vector;
 import javax.servlet.FilterChain;
 import javax.servlet.ReadListener;
 import javax.servlet.ServletException;
@@ -10,15 +14,10 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Map;
-import java.util.Vector;
 
 /**
  * CSRF exclusion for git-upload-pack.
- * 
+ *
  * <p>
  * We do some basic checks to significantly limit the scope of exclusion, but
  * because of the dynamic nature of the URL structure, this doesn't guarantee
@@ -26,7 +25,7 @@ import java.util.Vector;
  *
  * So to further protect Jenkins, we pass through a fake {@link HttpServletRequest}
  * that masks the values of the submission.
- * 
+ *
  * <p>
  * If the fake request is routed to {@link HttpGitRepository}, which is
  * the only legitimate destination of the request, we'll unwrap this fake request
@@ -35,19 +34,19 @@ import java.util.Vector;
  * <p>
  * In this way, even if an attacker manages to route the request to elsewhere in Jenkins,
  * that request will not be interpreted as a POST request.
- * 
+ *
  * @author Kohsuke Kawaguchi
  */
 @Extension
 public class CSRFExclusionImpl extends CrumbExclusion {
 
-    public boolean process(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        if (!"application/x-git-receive-pack-request".equals(request.getHeader("Content-Type")))
-            return false;
+    public boolean process(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
+        if (!"application/x-git-receive-pack-request".equals(request.getHeader("Content-Type"))) return false;
 
-//        String path = request.getPathInfo();
-//        if(!path.contains("/repo.git/") || !path.endsWith("/git-receive-pack"))
-//            return false;
+        //        String path = request.getPathInfo();
+        //        if(!path.contains("/repo.git/") || !path.endsWith("/git-receive-pack"))
+        //            return false;
 
         HttpServletRequestWrapper w = new HttpServletRequestWrapper(request) {
             @Override
@@ -72,7 +71,7 @@ public class CSRFExclusionImpl extends CrumbExclusion {
 
             @Override
             public String[] getParameterValues(String name) {
-                return new String[]{"bogus"};
+                return new String[] {"bogus"};
             }
 
             @Override
@@ -105,13 +104,13 @@ public class CSRFExclusionImpl extends CrumbExclusion {
                 };
             }
         };
-        w.setAttribute(ORIGINAL_REQUEST,request);
-        
-        chain.doFilter(w,response);
+        w.setAttribute(ORIGINAL_REQUEST, request);
+
+        chain.doFilter(w, response);
         return true;
     }
 
-    static final String ORIGINAL_REQUEST = CSRFExclusionImpl.class.getName()+".originalRequest";
+    static final String ORIGINAL_REQUEST = CSRFExclusionImpl.class.getName() + ".originalRequest";
 
     public static HttpServletRequest unwrapRequest(HttpServletRequest req) {
         return (HttpServletRequest) req.getAttribute(CSRFExclusionImpl.ORIGINAL_REQUEST);

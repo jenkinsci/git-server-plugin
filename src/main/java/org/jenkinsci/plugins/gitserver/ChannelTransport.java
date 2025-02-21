@@ -1,9 +1,13 @@
 package org.jenkinsci.plugins.gitserver;
 
 import hudson.FilePath;
-import hudson.FilePath.FileCallable;
 import hudson.remoting.Pipe;
 import hudson.remoting.VirtualChannel;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import jenkins.MasterToSlaveFileCallable;
 import org.apache.commons.io.IOUtils;
 import org.eclipse.jgit.errors.NotSupportedException;
@@ -20,12 +24,6 @@ import org.eclipse.jgit.transport.Transport;
 import org.eclipse.jgit.transport.URIish;
 import org.eclipse.jgit.transport.UploadPack;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-
 /**
  * {@link Transport} implementation across pipes.
  *
@@ -34,15 +32,14 @@ import java.net.URISyntaxException;
 public class ChannelTransport extends Transport implements PackTransport {
     private final FilePath remoteRepository;
 
-    public static Transport open(Repository local, FilePath remoteRepository) throws NotSupportedException, URISyntaxException, TransportException {
-        if (remoteRepository.isRemote())
-            return new ChannelTransport(local,remoteRepository);
-        else
-            return Transport.open(local,remoteRepository.getRemote());
+    public static Transport open(Repository local, FilePath remoteRepository)
+            throws NotSupportedException, URISyntaxException, TransportException {
+        if (remoteRepository.isRemote()) return new ChannelTransport(local, remoteRepository);
+        else return Transport.open(local, remoteRepository.getRemote());
     }
 
     public ChannelTransport(Repository local, FilePath remoteRepository) throws URISyntaxException {
-        super(local, new URIish("channel:"+remoteRepository.getRemote()));
+        super(local, new URIish("channel:" + remoteRepository.getRemote()));
         this.remoteRepository = remoteRepository;
     }
 
@@ -54,15 +51,17 @@ public class ChannelTransport extends Transport implements PackTransport {
         try {
             remoteRepository.actAsync(new GitFetchTask(l2r, r2l));
         } catch (IOException e) {
-            throw new TransportException("Failed to open a fetch connection",e);
+            throw new TransportException("Failed to open a fetch connection", e);
         } catch (InterruptedException e) {
-            throw new TransportException("Failed to open a fetch connection",e);
+            throw new TransportException("Failed to open a fetch connection", e);
         }
 
-        return new BasePackFetchConnection(this) {{
-            init(new BufferedInputStream(r2l.getIn()), new BufferedOutputStream(l2r.getOut()));
-            readAdvertisedRefs();
-        }};
+        return new BasePackFetchConnection(this) {
+            {
+                init(new BufferedInputStream(r2l.getIn()), new BufferedOutputStream(l2r.getOut()));
+                readAdvertisedRefs();
+            }
+        };
     }
 
     @Override
@@ -73,15 +72,17 @@ public class ChannelTransport extends Transport implements PackTransport {
         try {
             remoteRepository.actAsync(new GitPushTask(l2r, r2l));
         } catch (IOException e) {
-            throw new TransportException("Failed to open a fetch connection",e);
+            throw new TransportException("Failed to open a fetch connection", e);
         } catch (InterruptedException e) {
-            throw new TransportException("Failed to open a fetch connection",e);
+            throw new TransportException("Failed to open a fetch connection", e);
         }
 
-        return new BasePackPushConnection(this) {{
-            init(new BufferedInputStream(r2l.getIn()), new BufferedOutputStream(l2r.getOut()));
-            readAdvertisedRefs();
-        }};
+        return new BasePackPushConnection(this) {
+            {
+                init(new BufferedInputStream(r2l.getIn()), new BufferedOutputStream(l2r.getOut()));
+                readAdvertisedRefs();
+            }
+        };
     }
 
     @Override

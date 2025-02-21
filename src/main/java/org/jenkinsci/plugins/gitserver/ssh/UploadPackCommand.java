@@ -20,12 +20,12 @@ public class UploadPackCommand extends AbstractGitCommand {
     protected int doRun() throws Exception {
         for (RepositoryResolver rr : RepositoryResolver.all()) {
             UploadPack up = rr.createUploadPack(repoName);
-            if (up!=null) {
-                up.upload(getInputStream(),getOutputStream(),getErrorStream());
+            if (up != null) {
+                up.upload(getInputStream(), getOutputStream(), getErrorStream());
                 return 0;
             }
         }
 
-        throw new AbortException("No such repository exists:"+repoName);
+        throw new AbortException("No such repository exists:" + repoName);
     }
 }
