@@ -1,13 +1,13 @@
 package org.jenkinsci.plugins.gitserver;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import hudson.ExtensionList;
 import hudson.ExtensionPoint;
+import java.io.IOException;
 import jenkins.model.Jenkins;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.transport.ReceivePack;
 import org.eclipse.jgit.transport.UploadPack;
-
-import java.io.IOException;
 
 /**
  * Resolves the full name of the repository as given by Git clients to actual {@link Repository}.
@@ -48,6 +48,7 @@ public abstract class RepositoryResolver implements ExtensionPoint {
      *      null if this resolver doesn't recognize the given path name.
      *      This will allow other {@link RepositoryResolver}s to get a shot at the repository.
      */
+    @CheckForNull
     public abstract ReceivePack createReceivePack(String fullRepositoryName) throws IOException, InterruptedException;
 
     /**
@@ -61,13 +62,10 @@ public abstract class RepositoryResolver implements ExtensionPoint {
      *      null if this resolver doesn't recognize the given path name.
      *      This will allow other {@link RepositoryResolver}s to get a shot at the repository.
      */
+    @CheckForNull
     public abstract UploadPack createUploadPack(String fullRepositoryName) throws IOException, InterruptedException;
 
     public static ExtensionList<RepositoryResolver> all() throws IllegalStateException {
-        Jenkins j = Jenkins.getInstance();
-        if (j == null) {
-            throw new IllegalStateException();
-        }
-        return j.getExtensionList(RepositoryResolver.class);
+        return Jenkins.get().getExtensionList(RepositoryResolver.class);
     }
 }

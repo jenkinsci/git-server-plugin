@@ -15,7 +15,7 @@ import org.kohsuke.args4j.ParserProperties;
  * @author Kohsuke Kawaguchi
  */
 abstract class AbstractGitCommand extends AsynchronousCommand {
-    @Argument(index=0, metaVar="REPO", required=true, usage="repository name")
+    @Argument(index = 0, metaVar = "REPO", required = true, usage = "repository name")
     protected String repoName;
 
     AbstractGitCommand(CommandLine cmdLine) {
@@ -24,15 +24,16 @@ abstract class AbstractGitCommand extends AsynchronousCommand {
 
     @Override
     protected final int runCommand() throws Exception {
-            try {
-                ParserProperties properties = ParserProperties.defaults().withAtSyntax(false);
-                new CmdLineParser(this, properties).parseArgument(getCmdLine().subList(1,getCmdLine().size()));
-            } catch (CmdLineException e) {
-                throw new AbortException(e.getMessage());
-            }
+        try {
+            ParserProperties properties = ParserProperties.defaults().withAtSyntax(false);
+            new CmdLineParser(this, properties)
+                    .parseArgument(getCmdLine().subList(1, getCmdLine().size()));
+        } catch (CmdLineException e) {
+            throw new AbortException(e.getMessage());
+        }
 
-            return doRun();
+        return doRun();
     }
-    
+
     protected abstract int doRun() throws Exception;
 }
