@@ -1,8 +1,6 @@
 package org.jenkinsci.plugins.gitserver;
 
-import hudson.Util;
 import hudson.model.Action;
-import io.jenkins.servlet.http.HttpServletRequestWrapper;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
@@ -61,34 +59,8 @@ public abstract class HttpGitRepository {
      *
      * @see ReceivePackFactory#create(Object, Repository)
      */
-    @SuppressWarnings({"deprecated", "java:S1874"})
-    public ReceivePack createReceivePack(HttpServletRequest context, Repository db)
-            throws ServiceNotEnabledException, ServiceNotAuthorizedException {
-        if (Util.isOverridden(
-                HttpGitRepository.class,
-                getClass(),
-                "createReceivePack",
-                javax.servlet.http.HttpServletRequest.class,
-                Repository.class)) {
-            return createReceivePack(HttpServletRequestWrapper.fromJakartaHttpServletRequest(context), db);
-        }
-        throw new AbstractMethodError("Implementing class '" + this.getClass().getName() + "' does not override "
-                + "either overload of the createReceivePack method.");
-    }
-
-    /**
-     * @deprecated Override {@link #createReceivePack(HttpServletRequest, Repository)} instead.
-     */
-    @Deprecated(since = "134")
-    public ReceivePack createReceivePack(javax.servlet.http.HttpServletRequest context, Repository db)
-            throws ServiceNotEnabledException, ServiceNotAuthorizedException {
-        if (Util.isOverridden(
-                HttpGitRepository.class, getClass(), "createReceivePack", HttpServletRequest.class, Repository.class)) {
-            return createReceivePack(HttpServletRequestWrapper.toJakartaHttpServletRequest(context), db);
-        }
-        throw new AbstractMethodError("Implementing class '" + this.getClass().getName() + "' does not override "
-                + "either overload of the createReceivePack method.");
-    }
+    public abstract ReceivePack createReceivePack(HttpServletRequest context, Repository db)
+            throws ServiceNotEnabledException, ServiceNotAuthorizedException;
 
     /**
      * Returns the {@link UploadPack} that handles "git fetch" from client.
@@ -102,34 +74,8 @@ public abstract class HttpGitRepository {
      *
      * @see UploadPackFactory#create(Object, Repository)
      */
-    @SuppressWarnings({"deprecated", "java:S1874"})
-    public UploadPack createUploadPack(HttpServletRequest context, Repository db)
-            throws ServiceNotEnabledException, ServiceNotAuthorizedException {
-        if (Util.isOverridden(
-                HttpGitRepository.class,
-                getClass(),
-                "createUploadPack",
-                javax.servlet.http.HttpServletRequest.class,
-                Repository.class)) {
-            return createUploadPack(HttpServletRequestWrapper.fromJakartaHttpServletRequest(context), db);
-        }
-        throw new AbstractMethodError("Implementing class '" + this.getClass().getName() + "' does not override "
-                + "either overload of the createUploadPack method.");
-    }
-
-    /**
-     * @deprecated Override {@link #createUploadPack(HttpServletRequest, Repository)} instead.
-     */
-    @Deprecated(since = "134")
-    public UploadPack createUploadPack(javax.servlet.http.HttpServletRequest context, Repository db)
-            throws ServiceNotEnabledException, ServiceNotAuthorizedException {
-        if (Util.isOverridden(
-                HttpGitRepository.class, getClass(), "createUploadPack", HttpServletRequest.class, Repository.class)) {
-            return createUploadPack(HttpServletRequestWrapper.toJakartaHttpServletRequest(context), db);
-        }
-        throw new AbstractMethodError("Implementing class '" + this.getClass().getName() + "' does not override "
-                + "either overload of the createUploadPack method.");
-    }
+    public abstract UploadPack createUploadPack(HttpServletRequest context, Repository db)
+            throws ServiceNotEnabledException, ServiceNotAuthorizedException;
 
     /**
      * to make sure the user has the permission to pull.
